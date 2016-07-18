@@ -1,6 +1,6 @@
 extern crate pa_simple;
 
-use pa_simple::{Reader, Writer, Builder};
+use pa_simple::Builder;
 use std::thread::sleep;
 use std::time::Duration;
 
