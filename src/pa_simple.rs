@@ -1,4 +1,4 @@
-
+use std::convert::AsRef;
 use std::ffi::{CString, CStr};
 use std::ptr;
 use std::str::from_utf8;
@@ -36,16 +36,16 @@ pub struct Builder {
 
 impl Builder {
     /// Constructs a new Builder.
-    pub fn new(name: String, stream_name: String) -> Builder {
+    pub fn new<S: AsRef<str>>(name: S, stream_name: S) -> Builder {
         let sample_spec = pa_sample_spec {
             format: SampleFormat::S16LE as i32,
             rate: 44100,
             channels: 1
         };
         Builder {
-            name: name,
+            name: name.as_ref().to_string(),
             dev: None,
-            stream_name: stream_name,
+            stream_name: stream_name.as_ref().to_string(),
             sample_spec: sample_spec,
         }
     }
@@ -63,8 +63,8 @@ impl Builder {
     }
 
     /// Sets the device to use.
-    pub fn device(mut self, device: String) -> Builder {
-        self.dev = Some(device);
+    pub fn device<S: AsRef<str>>(mut self, device: S) -> Builder {
+        self.dev = Some(device.as_ref().to_string());
         self
     }
 
